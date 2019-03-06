@@ -1,0 +1,77 @@
+{
+  "name": "batch-mathml",
+  "title": "Batch MathML extractor and minifier",
+  "version": "1.0.0",
+  "description": "Extracts MathML from various files in a directory and stores the minified MathML output in an other directory.",
+  "repository": {
+    "url": "git+ssh://git@github.com/ag-gipp/node-batch-mathml.git",
+    "type": "git"
+  },
+  "engines": {
+    "node": ">=6"
+  },
+  "scripts": {
+    "prepare": "npm run build",
+    "postinstall": "npm run build",
+    "build": "tsc",
+    "clean": "rm -f app/MathML/*.js",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
+    "coverage": "nyc --reporter=lcov node_modules/.bin/_mocha",
+    "test": "mocha --require ts-node/register test/**/*.ts",
+    "compile": "projectz compile",
+    "posttest": "npm run compile",
+    "coveralls": "cat ./coverage/lcov.info | coveralls",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint"
+  },
+  "badges": {
+    "list": [
+      "travisci",
+      "npmversion",
+      "npmdownloads",
+      "daviddm",
+      "daviddmdev",
+      "coveralls"
+    ]
+  },
+  "main": "app/MathML/MathMLRenderer.js",
+  "dependencies": {
+    "mathml": "^1.1.6"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.6",
+    "@types/node": "^11.9.0",
+    "chai": "^4.2.0",
+    "coveralls": "^3.0.3",
+    "mocha": "^6.0.2",
+    "mocha-eslint": "^5.0.0",
+    "nyc": "^13.3.0",
+    "prettier": "^1.16.4",
+    "projectz": "^1.7.4",
+    "ts-node": "^8.0.2",
+    "tslint": "^5.13.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.3.3333"
+  },
+  "bugs": {
+    "url": "https://github.com/ag-gipp/node-batch-mathml/issues"
+  },
+  "homepage": "https://github.com/ag-gipp/node-batch-mathmll#readme",
+  "directories": {
+    "test": "src/__tests__"
+  },
+  "keywords": [
+    "mathml",
+    "math",
+    "xml",
+    "mathml3"
+  ],
+  "author": "2019 Moritz Schubotz <wiki@physikerwelt.de> (www.formulasearchengine.com)",
+  "license": "Apache-2.0",
+  "maintainers": [],
+  "contributors": [
+    "Moritz Schubotz <wiki@physikerwelt.de> (www.formulasearchengine.com)"
+  ]
+}
