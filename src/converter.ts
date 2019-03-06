@@ -58,7 +58,7 @@ export const ProcessFile = (inFile: string, outFolder: string, base?: string) =>
 export const Converter = (inFolder: string, outFolder: string) => {
   const queue = new PQueue({ concurrency: 1 });
   fs.readdirAsync(inFolder)
-    .filter((name: string) => fs.statSync(inFolder + '/' + name).isFile())
+    .filter((name: string) => fs.statSync(inFolder + '/' + name).isFile() && path.extname(name)==='.ann')
     .map((fn: string) => queue.add(() => ProcessFile(path.join(inFolder,fn), outFolder)));
   return queue.onIdle();
 
