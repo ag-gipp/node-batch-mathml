@@ -65,8 +65,8 @@ export const ProcessFolder = (inFolder: string, outFolder: string, queue = new P
       } else if (stats.isDirectory()) {
         ProcessFolder(path.join(inFolder, fn), path.join(outFolder, fn), queue);
       }
+      console.log(`Conversion que length ${queue.pending}` );
     }));
-  console.log(`Conversion que length ${queue.pending}` );
   return queue.onIdle();
 
 };
