@@ -6,6 +6,7 @@ const fs = BB.promisifyAll(require('fs'));
 const mathml: any = require('mathml');
 const PQueue = require('p-queue');
 const MathMatcher = /(?:<math(.*)<\/math>)/;
+let converted = 0;
 
 
 const minimize = (mml: string) =>
@@ -25,31 +26,35 @@ function processLine(line: string) {
 }
 
 export const ProcessFile = (inFile: string, outFile: string) => {
-  const base = path.dirname(inFile);
-  const queue = new PQueue({ concurrency: 1 });
-  const lineReader = createInterface({
-    input: fs.createReadStream(inFile),
+  return new Promise((resolve) => {
+    const base = path.dirname(inFile);
+    const queue = new PQueue({ concurrency: 1 });
+    const lineReader = createInterface({
+      input: fs.createReadStream(inFile),
+    });
+    const outStream = fs.createWriteStream(outFile);
+
+    lineReader.on('line', (line) => {
+      queue.add(() => processLine(line)
+        .then((mini) => outStream.write(mini + '\n'))
+        .catch((err) => null), //empty line
+      );
+
+    });
+    lineReader.on('close', () => {
+      queue.onIdle().then(
+        () => {
+          outStream.end('');
+          converted++;
+          console.log(`Converted ${converted} files. Last file was ${inFile}`);
+          resolve();
+        },
+      );
+    });
   });
-  const outStream = fs.createWriteStream(outFile);
-
-  lineReader.on('line', (line) => {
-    queue.add(() => processLine(line)
-      .then((mini) => outStream.write(mini + '\n'))
-      .catch((err) => null), //empty line
-    );
-
-  });
-  lineReader.on('close', () => {
-    queue.onIdle().then(
-      () => outStream.end(''),
-    );
-  });
-
-  return queue;
-
 };
 
-export const ProcessFolder = (inFolder: string, outFolder: string, queue = new PQueue({ concurrency: 1 }) ) => {
+export const ProcessFolder = (inFolder: string, outFolder: string, queue = new PQueue({ concurrency: 100 })) => {
   if (!fs.existsSync(outFolder)) {
     fs.mkdirSync(outFolder);
   }
@@ -60,12 +65,13 @@ export const ProcessFolder = (inFolder: string, outFolder: string, queue = new P
         if (path.extname(fn) === '.ann') {
           const inFile = path.join(inFolder, fn);
           const outFile = path.join(outFolder, fn);
-          return ProcessFile(inFile, outFile);
+          const fileP = ProcessFile(inFile, outFile);
+          return fileP.then(() => console.log(`Conversion que length ${queue.pending}`));
         }
       } else if (stats.isDirectory()) {
         ProcessFolder(path.join(inFolder, fn), path.join(outFolder, fn), queue);
       }
-      console.log(`Conversion que length ${queue.pending}` );
+      console.log(`Conversion que length ${queue.pending}`);
     }));
   return queue.onIdle();
 
