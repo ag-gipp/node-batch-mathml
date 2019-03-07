@@ -14,12 +14,15 @@ const getProcess = () => {
   if(pool.length){
     // @ts-ignore
     const p:ChildProcess = pool.pop();
-    console.log(`Receiving worker ${p.pid} from pool. Remaining workers in pool ${pool.length}.`);
+    console.log(`Receiving worker ${p.pid} from pool. Pool size ${pool.length}.`);
     return p;
   } else {
     const p = cp.fork(path.join(__dirname, 'worker.js'));
     processes.push(p);
     console.log(`Started new worker ${p.pid}. Total workers ${processes.length}.`);
+    p.on('message', () => {
+      console.log(`Giving back worker ${p.pid} to pool. Pool size ${pool.length}.`);
+      pool.push(p);});
     return p;
   }
 };
@@ -33,16 +36,19 @@ const RemoteProcessFile = (inFile: string, outFile: string) => {
   return new Promise((resolve) => {
     const p = getProcess();
     p.send({ inFile, outFile });
-    p.on('message', () => {
-      pool.push(p);
+    function onMessage(){
+      converted++;
+      console.log(`Converted ${converted} files. Last file was ${inFile}.`);
+      p.removeListener('message', onMessage);
       resolve();
-    });
+    }
+    p.on('message', onMessage);
   });
 };
 
 
 const ProcessFolder = (inFolder: string, outFolder: string, queue = new PQueue({
-  concurrency: 100,
+  concurrency: 60,
 })) => {
   if (!fs.existsSync(outFolder)) {
     fs.mkdirSync(outFolder);

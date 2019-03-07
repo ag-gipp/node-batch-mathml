@@ -45,8 +45,8 @@ export const ProcessFile = (inFile: string, outFile: string) => {
       queue.onIdle().then(
         () => {
           outStream.end('');
-          converted++;
-          console.log(`Converted ${converted} files. Last file was ${inFile}`);
+          // converted++;
+          // console.log(`Converted ${converted} files. Last file was ${inFile}`);
           resolve();
         },
       );
