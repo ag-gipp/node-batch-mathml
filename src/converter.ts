@@ -5,10 +5,12 @@ const BB = require('bluebird');
 const fs = BB.promisifyAll(require('fs'));
 const mathml: any = require('mathml');
 const PQueue = require('p-queue');
-const MathMatcher = /(<math(?:.*)<\/math>)/;
+const MathMatcher = /(?:<math(.*)<\/math>)/;
 
 
-const minimize = (mml: string) => mathml(mml).toMinimalPmml().toString();
+const minimize = (mml: string) =>
+  mathml(`<math  xmlns="http://www.w3.org/1998/Math/MathML" ${mml}</math>`)
+    .toMinimalPmml(['id','xref','alttext','display','class','kmcs-r']).toString();
 
 function processLine(line: string) {
   return new Promise((resolve, reject) => {
