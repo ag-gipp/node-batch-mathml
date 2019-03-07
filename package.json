@@ -11,7 +11,7 @@
     "node": ">=6"
   },
   "scripts": {
-    "convert": "node lib/converter.js",
+    "convert": "node lib/parallel-convert.js",
     "prepare": "npm run build",
     "postinstall": "npm run build",
     "build": "tsc",
