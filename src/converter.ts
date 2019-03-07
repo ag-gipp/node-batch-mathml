@@ -10,7 +10,7 @@ const MathMatcher = /(?:<math(.*)<\/math>)/;
 
 const minimize = (mml: string) =>
   mathml(`<math  xmlns="http://www.w3.org/1998/Math/MathML" ${mml}</math>`)
-    .toMinimalPmml(['id','xref','alttext','display','class','kmcs-r']).toString();
+    .toMinimalPmml(['id', 'xref', 'alttext', 'display', 'class', 'kmcs-r']).toString();
 
 function processLine(line: string) {
   return new Promise((resolve, reject) => {
@@ -40,7 +40,6 @@ export const ProcessFile = (inFile: string, outFile: string) => {
 
   });
   lineReader.on('close', () => {
-    console.log(queue.pending);
     queue.onIdle().then(
       () => outStream.end(''),
     );
@@ -50,8 +49,7 @@ export const ProcessFile = (inFile: string, outFile: string) => {
 
 };
 
-export const ProcessFolder = (inFolder: string, outFolder: string) => {
-  const queue = new PQueue({ concurrency: 1 });
+export const ProcessFolder = (inFolder: string, outFolder: string, queue = new PQueue({ concurrency: 1 }) ) => {
   if (!fs.existsSync(outFolder)) {
     fs.mkdirSync(outFolder);
   }
@@ -65,9 +63,15 @@ export const ProcessFolder = (inFolder: string, outFolder: string) => {
           return ProcessFile(inFile, outFile);
         }
       } else if (stats.isDirectory()) {
-        ProcessFolder(path.join(inFolder, fn), path.join(outFolder, fn));
+        ProcessFolder(path.join(inFolder, fn), path.join(outFolder, fn), queue);
       }
     }));
+  console.log(`Conversion que length ${queue.pending}` );
   return queue.onIdle();
 
 };
+
+if (process.argv.length == 4) {
+  ProcessFolder(process.argv[2], process.argv[3]);
+}
+
