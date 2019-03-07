@@ -22,19 +22,12 @@ function processLine(line: string) {
   });
 }
 
-export const ProcessFile = (inFile: string, outFolder: string, base?: string) => {
-  if (!base) {
-    base = path.dirname(inFile);
-  }
+export const ProcessFile = (inFile: string, outFile: string) => {
+  const base = path.dirname(inFile);
   const queue = new PQueue({ concurrency: 1 });
   const lineReader = createInterface({
     input: fs.createReadStream(inFile),
   });
-  const outPath = path.dirname(path.join(outFolder, path.relative(base, inFile)));
-  if (!fs.existsSync(outPath)) {
-    fs.mkdirSync(outPath);
-  }
-  const outFile = path.join(outPath, '/', path.basename(inFile));
   const outStream = fs.createWriteStream(outFile);
 
   lineReader.on('line', (line) => {
@@ -47,7 +40,7 @@ export const ProcessFile = (inFile: string, outFolder: string, base?: string) =>
   lineReader.on('close', () => {
     console.log(queue.pending);
     queue.onIdle().then(
-      () =>outStream.end('')
+      () => outStream.end(''),
     );
   });
 
@@ -55,11 +48,24 @@ export const ProcessFile = (inFile: string, outFolder: string, base?: string) =>
 
 };
 
-export const Converter = (inFolder: string, outFolder: string) => {
+export const ProcessFolder = (inFolder: string, outFolder: string) => {
   const queue = new PQueue({ concurrency: 1 });
+  if (!fs.existsSync(outFolder)) {
+    fs.mkdirSync(outFolder);
+  }
   fs.readdirAsync(inFolder)
-    .filter((name: string) => fs.statSync(inFolder + '/' + name).isFile() && path.extname(name)==='.ann')
-    .map((fn: string) => queue.add(() => ProcessFile(path.join(inFolder,fn), outFolder)));
+    .map((fn: string) => queue.add(() => {
+      const stats = fs.statSync(path.join(inFolder, fn));
+      if (stats.isFile()) {
+        if (path.extname(fn) === '.ann') {
+          const inFile = path.join(inFolder, fn);
+          const outFile = path.join(outFolder, fn);
+          return ProcessFile(inFile, outFile);
+        }
+      } else if (stats.isDirectory()) {
+        ProcessFolder(path.join(inFolder, fn), path.join(outFolder, fn));
+      }
+    }));
   return queue.onIdle();
 
 };
