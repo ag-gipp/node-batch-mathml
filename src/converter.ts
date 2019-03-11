@@ -11,7 +11,7 @@ let converted = 0;
 
 const minimize = (mml: string) =>
   mathml(`<math  xmlns="http://www.w3.org/1998/Math/MathML" ${mml}</math>`)
-    .toMinimalPmml(['id', 'xref', 'alttext', 'display', 'class', 'kmcs-r']).toString();
+    .toMinimalPmml(['id', 'xref', 'alttext', 'display', 'class', 'kmcs-r', 'stretchy', 'mathvariant', 'largeop', 'symmetric', 'rspace']).toString();
 
 function processLine(line: string) {
   return new Promise((resolve, reject) => {
