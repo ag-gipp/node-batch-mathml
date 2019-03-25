@@ -40,7 +40,7 @@
   "dependencies": {
     "bluebird": "^3.5.3",
     "mathml": "^1.1.7",
-    "p-queue": "^3.2.0"
+    "p-queue": "^4.0.0"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
@@ -75,6 +75,7 @@
   "license": "Apache-2.0",
   "maintainers": [],
   "contributors": [
-    "Moritz Schubotz <wiki@physikerwelt.de> (www.formulasearchengine.com)"
+    "Moritz Schubotz <wiki@physikerwelt.de> (www.formulasearchengine.com)",
+    "André Greiner-Petter (https://github.com/AndreG-P)"
   ]
 }

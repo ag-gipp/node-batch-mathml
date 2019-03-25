@@ -21,6 +21,13 @@
 
 Extracts MathML from various files in a directory and stores the minified MathML output in an other directory.
 
+Run the following command to compile a directory of files:
+```bash
+git clone https://github.com/ag-gipp/node-batch-mathml
+npm i
+npm run build
+run convert -- /path/to/source /path/to/target > /path/to/log/logfile.log 2>&1
+```
 <!-- /DESCRIPTION -->
 
 
