@@ -18,7 +18,7 @@
     "clean": "rm -f app/MathML/*.js",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json",
-    "coverage": "nyc --reporter=lcov node_modules/.bin/_mocha",
+    "coverage": "nyc --reporter=lcov node_modules/.bin/_mocha --require ts-node/register test/**/*.ts",
     "test": "mocha --require ts-node/register test/**/*.ts",
     "compile": "projectz compile",
     "posttest": "npm run compile",
