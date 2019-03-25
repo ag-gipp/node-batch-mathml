@@ -1,5 +1,6 @@
 import { ProcessFile } from './converter';
 
+/* tslint:disable-next-line  */
 const log = (msg:string) => console.log(`Worker ${process.pid}: ${msg}`);
 
 process.on('message', (msg) => {

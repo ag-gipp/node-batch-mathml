@@ -1,12 +1,15 @@
-import { createInterface } from 'readline';
 import path = require( 'path');
+import { createInterface } from 'readline';
 
+/* tslint:disable-next-line  */
 const BB = require('bluebird');
+/* tslint:disable-next-line  */
 const fs = BB.promisifyAll(require('fs'));
+/* tslint:disable-next-line  */
 const mathml: any = require('mathml');
+/* tslint:disable-next-line  */
 const PQueue = require('p-queue');
 const MathMatcher = /(?:<math(.*)<\/math>)/;
-let converted = 0;
 
 
 const minimize = (mml: string) =>
@@ -37,7 +40,7 @@ export const ProcessFile = (inFile: string, outFile: string) => {
     lineReader.on('line', (line) => {
       queue.add(() => processLine(line)
         .then((mini) => outStream.write(mini + '\n'))
-        .catch((err) => null), //empty line
+        .catch((err) => null),
       );
 
     });
@@ -66,18 +69,20 @@ export const ProcessFolder = (inFolder: string, outFolder: string, queue = new P
           const inFile = path.join(inFolder, fn);
           const outFile = path.join(outFolder, fn);
           const fileP = ProcessFile(inFile, outFile);
+          /* tslint:disable-next-line  */
           return fileP.then(() => console.log(`Conversion que length ${queue.pending}`));
         }
       } else if (stats.isDirectory()) {
         ProcessFolder(path.join(inFolder, fn), path.join(outFolder, fn), queue);
       }
+      /* tslint:disable-next-line  */
       console.log(`Conversion que length ${queue.pending}`);
     }));
   return queue.onIdle();
 
 };
 
-if (process.argv.length == 4) {
+if (process.argv.length === 4) {
   ProcessFolder(process.argv[2], process.argv[3]);
 }
 
