@@ -3,7 +3,7 @@ T1	h1 4 12	__H1_0__
 T2	h6 15 23	__H6_0__
 #2	AnnotatorNotes T2	Abstract
 T3	math 138 148	__MATH_0__
-#3	AnnotatorNotes T3	<math id="id6.m1.1" class="ltx_Math" alttext="3" display="inline" kmcs-r="__MATH_0__"><semantics id="id6.m1.1a"><mn id="id6.m1.1.1" xref="id6.m1.1.1.cmml">3</mn><annotation-xml encoding="MathML-Content" id="id6.m1.1b"><cn type="integer" id="id6.m1.1.1.cmml" xref="id6.m1.1.1">3</cn></annotation-xml><annotation encoding="application/x-llamapun" id="id6.m1.1c">NUMBER:3</annotation><annotation encoding="application/x-tex" id="id6.m1.1d">3</annotation></semantics></math>
+#3	AnnotatorNotes T3	<math id="id6.m1.1" class="ltx_Math" alttext="{}^{3}" display="inline" kmcs-r="__MATH_0__"><semantics id="id6.m1.1a"><mn id="id6.m1.1.1" xref="id6.m1.1.1.cmml">3</mn><annotation-xml encoding="MathML-Content" id="id6.m1.1b"><cn type="integer" id="id6.m1.1.1.cmml" xref="id6.m1.1.1">3</cn></annotation-xml><annotation encoding="application/x-llamapun" id="id6.m1.1c">NUMBER:3</annotation><annotation encoding="application/x-tex" id="id6.m1.1d">3</annotation></semantics></math>
 T4	math 202 212	__MATH_1__
 #4	AnnotatorNotes T4	<math id="id6.m2.1" class="ltx_Math" alttext="4" display="inline" kmcs-r="__MATH_1__"><semantics id="id6.m2.1a"><mn id="id6.m2.1.1" xref="id6.m2.1.1.cmml">4</mn><annotation-xml encoding="MathML-Content" id="id6.m2.1b"><cn type="integer" id="id6.m2.1.1.cmml" xref="id6.m2.1.1">4</cn></annotation-xml><annotation encoding="application/x-llamapun" id="id6.m2.1c">NUMBER:4</annotation><annotation encoding="application/x-tex" id="id6.m2.1d">4</annotation></semantics></math>
 T5	h2 29 37	__H2_0__

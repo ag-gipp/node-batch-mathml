@@ -13,7 +13,7 @@ const MathMatcher = /(?:<math(.*)<\/math>)/;
 
 
 const minimize = (mml: string) =>
-  mathml(`<math  xmlns="http://www.w3.org/1998/Math/MathML" ${mml}</math>`)
+  mathml(`<math xmlns="http://www.w3.org/1998/Math/MathML" ${mml}</math>`)
   .toMinimalPmml([
   	'id', 'xref', 'alttext', 'display', 'class', 'kmcs-r', 'stretchy', 'mathvariant', 'largeop', 'symmetric', 'rspace',
 	'accent', 'displaystyle', 'width', 'mathsize', 'columnalign', 'movablelimits', 'minsize', 'maxsize', 'fence',
@@ -44,11 +44,12 @@ export const ProcessFile = (inFile: string, outFile: string) => {
     const outStream = fs.createWriteStream(outFile);
 
     lineReader.on('line', (line) => {
-      queue.add(() => processLine(line)
-        .then((mini) => outStream.write(mini + '\n'))
-        .catch((err) => null),
-      );
-
+      if (!/alttext="{}\^{.*?}"/.test(line)) {
+        queue.add(() => processLine(line)
+          .then((mini) => outStream.write(mini + '\n'))
+          .catch((err) => null),
+        );
+      }
     });
     lineReader.on('close', () => {
       queue.onIdle().then(
