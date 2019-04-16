@@ -14,7 +14,13 @@ const MathMatcher = /(?:<math(.*)<\/math>)/;
 
 const minimize = (mml: string) =>
   mathml(`<math  xmlns="http://www.w3.org/1998/Math/MathML" ${mml}</math>`)
-    .toMinimalPmml(['id', 'xref', 'alttext', 'display', 'class', 'kmcs-r', 'stretchy', 'mathvariant', 'largeop', 'symmetric', 'rspace']).toString();
+  .toMinimalPmml([
+  	'id', 'xref', 'alttext', 'display', 'class', 'kmcs-r', 'stretchy', 'mathvariant', 'largeop', 'symmetric', 'rspace',
+	'accent', 'displaystyle', 'width', 'mathsize', 'columnalign', 'movablelimits', 'minsize', 'maxsize', 'fence',
+	'lspace', 'mathcolor', 'rowspacing', 'columnspacing', 'separator', 'transform', 'accentunder', 'height',
+	'linethickness', 'role', 'style', 'depth', 'overflow', 'stroke-width', 'fontsize', 'font', 'align', 'color',
+	'viewbox', 'href', 'idref', 'columnspan', 'cx', 'cy', 'r', 'd', 'fill', 'fragid', 'rx', 'mathbackground'
+  ]).toString();
 
 function processLine(line: string) {
   return new Promise((resolve, reject) => {

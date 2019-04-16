@@ -57,7 +57,7 @@ const RemoteProcessFile = (inFile: string, outFile: string) => {
 
 
 const ProcessFolder = (inFolder: string, outFolder: string, queue = new PQueue({
-  concurrency: 60,
+  concurrency: 80,
 })) => {
   if (!fs.existsSync(outFolder)) {
     fs.mkdirSync(outFolder);
